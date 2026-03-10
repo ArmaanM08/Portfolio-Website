@@ -1,0 +1,104 @@
+.dashboard {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--card-border);
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.message {
+    color: var(--accent-color);
+    font-weight: 600;
+    animation: fadeIn 0.3s ease;
+}
+
+.loading,
+.error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+@media (max-width: 1024px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.sectionCard {
+    padding: 2rem;
+}
+
+.fullWidth {
+    grid-column: 1 / -1;
+}
+
+.sectionCard h2 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
+    color: var(--accent-color);
+    border-bottom: 2px solid var(--card-border);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+}
+
+.formGroup {
+    margin-bottom: 1.5rem;
+}
+
+.formGroup label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+}
+
+.formGroup textarea {
+    resize: vertical;
+}
+
+.arrayList {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.arrayItem {
+    background: rgba(var(--text-color), 0.02);
+    border: 1px solid var(--card-border);
+    padding: 1.5rem;
+    border-radius: 12px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

@@ -1,0 +1,68 @@
+.section {
+    padding: 8rem 0;
+    margin-bottom: 4rem;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.contactCard {
+    max-width: 800px;
+    width: 100%;
+    text-align: center;
+    padding: 5rem 3rem;
+    background: var(--gradient-overlay);
+    border: 1px solid var(--accent-color);
+}
+
+.message {
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    margin-bottom: 3rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.socials {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.socialLink {
+    font-size: 1.2rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.socialLink::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: var(--accent-color);
+    transition: width 0.3s ease;
+}
+
+.socialLink:hover::after {
+    width: 100%;
+}
+
+.socialLink:hover {
+    color: var(--accent-color);
+}

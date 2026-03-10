@@ -1,0 +1,71 @@
+{
+  "hero": {
+    "greeting": "Hi, I'm Armaan Mulani",
+    "title": "Data Scientist & Full-Stack Developer",
+    "description": "Aspiring data scientist currently in my 2nd year of B.Tech CSE. Freelancing for clients and building websites for time being.",
+    "ctaText": "View My Work",
+    "ctaLink": "#projects"
+  },
+  "projects": [
+    {
+      "id": "1",
+      "title": "SME Analytics Dashboard",
+      "description": "A comprehensive dashboard for predicting the risk score of loan repayment.",
+      "tags": [
+        "Python",
+        "Netlify"
+      ],
+      "link": "https://github.com/ArmaanM08/SME_Dashboard"
+    },
+    {
+      "id": "2",
+      "title": "WikiDoCollab - A Research Collaboration Platform",
+      "description": "A full stack, project collaboration platform, in which users can create edit remove and collaborate with other users to make and manage project/research papers.",
+      "tags": [
+        "Express.js",
+        "Node.js",
+        "MongoDB",
+        "React.js"
+      ],
+      "link": "https://my-project-wikidocollab.vercel.app/"
+    }
+  ],
+  "skills": [
+    {
+      "id": "1",
+      "name": "Python",
+      "category": "Data Science",
+      "level": 90
+    },
+    {
+      "id": "2",
+      "name": "Machine Learning",
+      "category": "Data Science",
+      "level": 85
+    },
+    {
+      "id": "3",
+      "name": "React / Next.js",
+      "category": "Web Dev",
+      "level": 95
+    },
+    {
+      "id": "4",
+      "name": "Node.js",
+      "category": "Web Dev",
+      "level": 80
+    },
+    {
+      "id": "5",
+      "name": "SQL / NoSQL",
+      "category": "Database",
+      "level": 85
+    }
+  ],
+  "contact": {
+    "email": "armaanmulani08@gmail.com",
+    "linkedin": "https://linkedin.com/in/armaan-mulani",
+    "github": "https://github.com/ArmaanM08",
+    "message": "Interested in working together or have a question? Feel free to reach out!"
+  }
+}

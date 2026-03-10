@@ -1,0 +1,33 @@
+.loginContainer {
+    min-height: calc(100vh - 80px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.loginCard {
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    padding: 3rem 2rem;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.loginBtn {
+    width: 100%;
+}
+
+.error {
+    color: #ff4d4f;
+    background: rgba(255, 77, 79, 0.1);
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
