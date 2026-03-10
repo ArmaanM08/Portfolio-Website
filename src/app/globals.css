@@ -5,7 +5,8 @@
   --bg-color: #f7ede2;
   --text-color: #1a1a1a;
   --text-secondary: #555555;
-  --accent-color: #f28482; /* Bold reddish pink */
+  --accent-color: #f28482;
+  /* Bold reddish pink */
   --accent-hover: #f5b5b4;
   --card-bg: rgba(255, 255, 255, 0.6);
   --card-border: rgba(0, 0, 0, 0.05);
@@ -17,7 +18,8 @@
   --bg-color: #0d1321;
   --text-color: #f0ebd8;
   --text-secondary: #a3b1c6;
-  --accent-color: #748cab; /* Bold pale blue */
+  --accent-color: #748cab;
+  /* Bold pale blue */
   --accent-hover: #3e5c76;
   --card-bg: rgba(29, 45, 68, 0.6);
   --card-border: rgba(255, 255, 255, 0.05);
@@ -31,7 +33,8 @@
   transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
 }
 
-html, body {
+html,
+body {
   font-family: 'Outfit', sans-serif;
   background-color: var(--bg-color);
   color: var(--text-color);
@@ -69,7 +72,7 @@ ul {
 
 .bold-heading {
   font-weight: 900;
-  font-size: clamp(3rem, 8vw, 6rem);
+  font-size: clamp(2.5rem, 8vw, 6rem);
   letter-spacing: -0.05em;
   line-height: 1.1;
   margin-bottom: 1rem;
@@ -110,7 +113,8 @@ ul {
   border: none;
   border-radius: 50px;
   background-color: var(--accent-color);
-  color: var(--bg-color); /* Contrast color */
+  color: var(--bg-color);
+  /* Contrast color */
   cursor: pointer;
   position: relative;
   overflow: hidden;
@@ -189,12 +193,37 @@ ul {
   width: 100%;
 }
 
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  .header {
+    padding: 1rem 0;
+  }
+
+  .nav-links {
+    gap: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .logo {
+    font-size: 1.2rem;
+  }
+
+  .btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
 /* Animations */
 @keyframes fadeInUp {
   from {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -205,9 +234,17 @@ ul {
   animation: fadeInUp 0.8s ease backwards;
 }
 
-.delay-1 { animation-delay: 0.2s; }
-.delay-2 { animation-delay: 0.4s; }
-.delay-3 { animation-delay: 0.6s; }
+.delay-1 {
+  animation-delay: 0.2s;
+}
+
+.delay-2 {
+  animation-delay: 0.4s;
+}
+
+.delay-3 {
+  animation-delay: 0.6s;
+}
 
 /* Dashboard Styles */
 .dashboard-layout {
