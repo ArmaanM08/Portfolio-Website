@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import ThemeToggle from '../components/ThemeToggle';
-import Link from 'next/link';
+import Navbar from '../components/Navbar';
+import SmoothScrollProvider from '../components/SmoothScrollProvider';
 
 export const metadata: Metadata = {
   title: 'Portfolio | Armaan Mulani',
@@ -14,22 +14,31 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-theme="dark">
+    <html lang="en" data-theme="dark" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var t = localStorage.getItem('theme');
+                  if (!t) {
+                    t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                  }
+                  if (t) document.documentElement.setAttribute('data-theme', t);
+                } catch(e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
       <body>
-        <header className="header">
-          <div className="container nav-container">
-            <Link href="/" className="logo gradient-text">ARMAAN</Link>
-            <nav className="nav-links">
-              <Link href="/#projects" className="nav-link">Projects</Link>
-              <Link href="/#skills" className="nav-link">Skills</Link>
-              <Link href="/#contact" className="nav-link">Contact</Link>
-              <ThemeToggle />
-            </nav>
-          </div>
-        </header>
-        <main style={{ paddingTop: '80px', minHeight: 'calc(100vh - 80px)' }}>
-          {children}
-        </main>
+        <SmoothScrollProvider>
+          <Navbar />
+          <main style={{ minHeight: '100vh' }}>
+            {children}
+          </main>
+        </SmoothScrollProvider>
       </body>
     </html>
   );

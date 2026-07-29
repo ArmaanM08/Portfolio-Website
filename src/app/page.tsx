@@ -1,11 +1,12 @@
 import Hero from '../components/Hero';
 import Projects from '../components/Projects';
+import Experience from '../components/Experience';
 import Skills from '../components/Skills';
 import Contact from '../components/Contact';
 import fs from 'fs';
 import path from 'path';
 
-export const revalidate = 0; // Disable static caching so edits reflect immediately
+export const revalidate = 0;
 
 export default async function Home() {
   const filePath = path.join(process.cwd(), 'src/data/portfolio.json');
@@ -15,6 +16,7 @@ export default async function Home() {
   return (
     <>
       <Hero data={portfolioData.hero} />
+      <Experience data={portfolioData.experience} />
       <Projects data={portfolioData.projects} />
       <Skills data={portfolioData.skills} />
       <Contact data={portfolioData.contact} />

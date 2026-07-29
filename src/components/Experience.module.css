@@ -1,0 +1,136 @@
+.section {
+  position: relative;
+  overflow: hidden;
+}
+
+.section::before {
+  content: '';
+  position: absolute;
+  bottom: -20%;
+  left: -5%;
+  width: 400px;
+  height: 400px;
+  background: var(--gradient-overlay);
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+}
+
+.headerWrap {
+  margin-bottom: 3rem;
+}
+
+.heading {
+  text-align: center;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.card {
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, border-color 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--card-shadow-hover);
+  border-color: var(--accent-color);
+}
+
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
+  gap: 1rem;
+}
+
+.company {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text-color);
+  line-height: 1.3;
+}
+
+.position {
+  font-size: 0.95rem;
+  color: var(--accent-color);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.period {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+}
+
+.bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  list-style: none;
+  padding: 0;
+}
+
+.bullet {
+  position: relative;
+  padding-left: 1.25rem;
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.bullet::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-color);
+  opacity: 0.6;
+}
+
+@media (max-width: 768px) {
+  .headerWrap {
+    margin-bottom: 2rem;
+  }
+
+  .heading {
+    font-size: 3rem;
+  }
+
+  .card {
+    padding: 1.5rem;
+  }
+
+  .cardTop {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .company {
+    font-size: 1.2rem;
+  }
+
+  .bullet {
+    font-size: 0.88rem;
+  }
+}

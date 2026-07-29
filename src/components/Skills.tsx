@@ -1,58 +1,101 @@
+'use client';
+
+import { motion } from 'framer-motion';
 import styles from './Skills.module.css';
 
 interface Skill {
-    id: string;
-    name: string;
-    category: string;
-    level: number;
+  id: string;
+  name: string;
+  category: string;
+  level: number;
 }
 
 interface SkillsProps {
-    data: Skill[];
+  data: Skill[];
 }
 
+const container = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.1 },
+  },
+} as const;
+
+const item = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { type: 'spring' as const, stiffness: 100, damping: 20 },
+  },
+};
+
 export default function Skills({ data }: SkillsProps) {
-    const categories = Array.from(new Set(data.map(s => s.category)));
+  const categories = Array.from(new Set(data.map((s) => s.category)));
 
-    return (
-        <section id="skills" className={styles.section}>
-            <div className={`container ${styles.container}`}>
-                <div className={styles.visualSide}>
-                    <h2 className={`bold-heading animate-fade-in-up delay-1`}>
-                        Technical <br /><span className="gradient-text">Arsenal</span>
-                    </h2>
-                    <div className={`${styles.statsCard} card animate-fade-in-up delay-2`}>
-                        <div className={styles.statItem}>
-                            <span className={styles.statNumber}>{data.length}+</span>
-                            <span className={styles.statLabel}>Core Technologies</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div className={styles.skillsSide}>
-                    {categories.map((category, catIndex) => (
-                        <div key={category} className={`${styles.categoryGroup} animate-fade-in-up delay-${(catIndex % 3) + 1}`}>
-                            <h3 className={styles.categoryTitle}>{category}</h3>
-                            <div className={styles.skillsWrap}>
-                                {data.filter(s => s.category === category).map((skill, index) => (
-                                    <div key={skill.id} className={styles.skillItem} style={{ animationDelay: `${index * 0.1}s` }}>
-                                        <div className={styles.skillHeader}>
-                                            <span>{skill.name}</span>
-                                            <span>{skill.level}%</span>
-                                        </div>
-                                        <div className={styles.progressBarBg}>
-                                            <div
-                                                className={styles.progressBarFill}
-                                                style={{ width: `${skill.level}%` }}
-                                            ></div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    ))}
-                </div>
+  return (
+    <section id="skills" className={`section-padding ${styles.section}`}>
+      <div className={`container ${styles.container}`}>
+        <motion.div
+          className={styles.visualSide}
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+        >
+          <span className="eyebrow-badge">Expertise</span>
+          <h2 className={`bold-heading`}>
+            Technical <br /><span className="gradient-text">Arsenal</span>
+          </h2>
+          <div className={styles.statsCard}>
+            <div className={styles.statItem}>
+              <span className={styles.statNumber}>{data.length}+</span>
+              <span className={styles.statLabel}>Core Technologies</span>
             </div>
-        </section>
-    );
+          </div>
+        </motion.div>
+
+        <motion.div
+          className={styles.skillsSide}
+          variants={container}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
+        >
+          {categories.map((category) => (
+            <motion.div key={category} className={styles.categoryGroup} variants={item}>
+              <h3 className={styles.categoryTitle}>{category}</h3>
+              <div className={styles.skillsWrap}>
+                {data.filter((s) => s.category === category).map((skill, index) => (
+                  <div
+                    key={skill.id}
+                    className={styles.skillItem}
+                    style={{ transitionDelay: `${index * 0.05}s` }}
+                  >
+                    <div className={styles.skillHeader}>
+                      <span>{skill.name}</span>
+                      <span>{skill.level}%</span>
+                    </div>
+                    <div className={styles.progressBarBg}>
+                      <motion.div
+                        className={styles.progressBarFill}
+                        initial={{ width: 0 }}
+                        whileInView={{ width: `${skill.level}%` }}
+                        viewport={{ once: true }}
+                        transition={{
+                          duration: 1,
+                          delay: index * 0.1,
+                          ease: [0.175, 0.885, 0.32, 1.275],
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
 }

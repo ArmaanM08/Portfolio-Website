@@ -1,69 +1,66 @@
 {
   "hero": {
-    "greeting": "Hi, I'm Armaan Mulani",
-    "title": "Data Scientist & Full-Stack Developer",
-    "description": "Aspiring data scientist currently in my 2nd year of B.Tech CSE. Freelancing for clients and building websites for time being.",
+    "greeting": "Armaan Mulani",
+    "title": "Machine Learning & Full-Stack Developer",
+    "description": "BTech CSE at ITM Skills University | Full Stack Intern at Codexa Infotech | Building production-ready AI systems and scalable web applications.",
     "ctaText": "View My Work",
     "ctaLink": "#projects"
   },
+  "experience": [
+    {
+      "id": "1",
+      "company": "Codexa Infotech LLP",
+      "position": "Full Stack Intern",
+      "period": "July 2026 – Present",
+      "bullets": [
+        "Developed, deployed, and maintain the company's CRM and Employee Management System, supporting internal workflows for 20-25 employees.",
+        "Rebuilt backend pin-management logic and resolved production bugs for Espy IDE, an IoT block-based coding platform with Marathi-language support.",
+        "Built the backend from scratch for Navrang Pustika, an offline Windows Jupyter Notebook alternative supporting ML/Python libraries and Marathi.",
+        "Contributed to compilation and packaging for CodexBlocks, a Marathi-language voice-operated Scratch alternative.",
+        "Lead 3-4 interns building frontend demos for client projects; coordinate backend integration across three projects."
+      ]
+    }
+  ],
   "projects": [
     {
       "id": "1",
       "title": "SME Analytics Dashboard",
-      "description": "A comprehensive dashboard for predicting the risk score of loan repayment.",
-      "tags": [
-        "Python",
-        "Netlify"
-      ],
+      "description": "A comprehensive dashboard for predicting the risk score of loan repayment using machine learning models.",
+      "tags": ["Python", "ML", "Netlify"],
       "link": "https://github.com/ArmaanM08/SME_Dashboard"
     },
     {
       "id": "2",
-      "title": "WikiDoCollab - A Research Collaboration Platform",
-      "description": "A full stack, project collaboration platform, in which users can create edit remove and collaborate with other users to make and manage project/research papers.",
-      "tags": [
-        "Express.js",
-        "Node.js",
-        "MongoDB",
-        "React.js"
-      ],
+      "title": "WikiDoCollab",
+      "description": "A full stack research collaboration platform where users can create, edit, and collaborate on projects and research papers in real-time.",
+      "tags": ["React.js", "Node.js", "MongoDB", "Express.js"],
       "link": "https://my-project-wikidocollab.vercel.app/"
-    }
-  ],
-  "skills": [
-    {
-      "id": "1",
-      "name": "Python",
-      "category": "Data Science",
-      "level": 90
-    },
-    {
-      "id": "2",
-      "name": "Machine Learning",
-      "category": "Data Science",
-      "level": 85
     },
     {
       "id": "3",
-      "name": "React / Next.js",
-      "category": "Web Dev",
-      "level": 95
-    },
-    {
-      "id": "4",
-      "name": "Node.js",
-      "category": "Web Dev",
-      "level": 80
-    },
-    {
-      "id": "5",
-      "name": "SQL / NoSQL",
-      "category": "Database",
-      "level": 85
+      "title": "Sentinel-ML",
+      "description": "A production-ready AI-powered business analytics system with an intuitive UI, multi-data support, and Dockerized form for portability.",
+      "tags": ["Python", "FastAPI", "Docker", "ML"],
+      "link": "https://github.com/ArmaanM08/SentinelML.git"
     }
+  ],
+  "skills": [
+    { "id": "1", "name": "Python", "category": "Languages", "level": 90 },
+    { "id": "2", "name": "TypeScript", "category": "Languages", "level": 85 },
+    { "id": "3", "name": "React / Next.js", "category": "Web Dev", "level": 95 },
+    { "id": "4", "name": "Node.js", "category": "Web Dev", "level": 85 },
+    { "id": "5", "name": "REST APIs & FastAPI", "category": "Web Dev", "level": 80 },
+    { "id": "6", "name": "Machine Learning", "category": "Data Science", "level": 85 },
+    { "id": "7", "name": "MySQL", "category": "Database", "level": 85 },
+    { "id": "8", "name": "MongoDB", "category": "Database", "level": 80 },
+    { "id": "9", "name": "AWS (EC2, S3, VPC)", "category": "Cloud & DevOps", "level": 75 },
+    { "id": "10", "name": "Docker & Kubernetes", "category": "Cloud & DevOps", "level": 70 },
+    { "id": "11", "name": "Jenkins & CI/CD", "category": "Cloud & DevOps", "level": 65 },
+    { "id": "12", "name": "Git & GitHub", "category": "Cloud & DevOps", "level": 90 }
   ],
   "contact": {
     "email": "armaanmulani08@gmail.com",
+    "phone": "+91 9175342739",
     "linkedin": "https://linkedin.com/in/armaan-mulani",
     "github": "https://github.com/ArmaanM08",
     "message": "Interested in working together or have a question? Feel free to reach out!"
