@@ -1,15 +1,12 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
-import { useLenis } from 'lenis/react';
 import styles from './Hero.module.css';
 
 const ANNOTATIONS = [
   { id: 'discover', label: 'Full-Stack Developer', show: 0.10, hide: 0.45 },
   { id: 'innovate', label: 'Machine Learning', show: 0.50, hide: 0.85 },
 ];
-
-const FRAME_COUNT = 150;
 
 interface HeroProps {
   data: {
@@ -25,31 +22,44 @@ export default function Hero({ data }: HeroProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const heroTextRef = useRef<HTMLDivElement>(null);
-  const tickingRef = useRef(false);
   const prevVisibleRef = useRef('');
-  const videoReadyRef = useRef(false);
+  const readyRef = useRef(false);
+  const progressRef = useRef(0);
   const [visibleCards, setVisibleCards] = useState<string[]>([]);
 
-  useLenis((lenis) => {
-    if (tickingRef.current) return;
-    tickingRef.current = true;
+  useEffect(() => {
+    const video = videoRef.current;
+    const section = sectionRef.current;
+    if (!video || !section) return;
 
-    requestAnimationFrame(() => {
-      const section = sectionRef.current;
-      const video = videoRef.current;
-      if (!section || !video) {
-        tickingRef.current = false;
-        return;
+    const prime = async () => {
+      try {
+        video.muted = true;
+        await video.play();
+        video.currentTime = 0;
+        readyRef.current = true;
+      } catch {
+        setTimeout(prime, 300);
       }
+    };
+    if (video.readyState >= 2) prime();
+    else video.addEventListener('loadeddata', prime, { once: true });
 
+    let rafId: number;
+    const sync = () => {
+      if (readyRef.current && video.duration) {
+        video.currentTime = progressRef.current * video.duration;
+      }
+      rafId = requestAnimationFrame(sync);
+    };
+    rafId = requestAnimationFrame(sync);
+
+    const onScroll = () => {
       const rect = section.getBoundingClientRect();
       const scrollable = section.offsetHeight - window.innerHeight;
       const raw = -rect.top / scrollable;
       const p = Math.min(1, Math.max(0, raw));
-
-      if (videoReadyRef.current && video.duration) {
-        video.currentTime = p * video.duration;
-      }
+      progressRef.current = p;
 
       if (heroTextRef.current) {
         const opacity = Math.max(0, 1 - p / 0.08);
@@ -66,27 +76,14 @@ export default function Hero({ data }: HeroProps) {
         prevVisibleRef.current = key;
         setVisibleCards(visible);
       }
-
-      tickingRef.current = false;
-    });
-  }, []);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const onLoaded = () => {
-      videoReadyRef.current = true;
-      video.currentTime = 0;
     };
 
-    if (video.readyState >= 2) {
-      onLoaded();
-    } else {
-      video.addEventListener('loadedmetadata', onLoaded);
-    }
-
-    return () => video.removeEventListener('loadedmetadata', onLoaded);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      cancelAnimationFrame(rafId);
+      video.pause();
+    };
   }, []);
 
   return (
@@ -97,7 +94,6 @@ export default function Hero({ data }: HeroProps) {
           className={styles.video}
           muted
           playsInline
-          loop
           preload="auto"
           src="/hero-video.mp4"
         />
