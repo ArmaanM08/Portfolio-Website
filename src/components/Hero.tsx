@@ -23,8 +23,7 @@ export default function Hero({ data }: HeroProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const heroTextRef = useRef<HTMLDivElement>(null);
   const prevVisibleRef = useRef('');
-  const readyRef = useRef(false);
-  const progressRef = useRef(0);
+  const syncRef = useRef<number>(0);
   const [visibleCards, setVisibleCards] = useState<string[]>([]);
 
   useEffect(() => {
@@ -32,34 +31,26 @@ export default function Hero({ data }: HeroProps) {
     const section = sectionRef.current;
     if (!video || !section) return;
 
-    const prime = async () => {
-      try {
-        video.muted = true;
-        await video.play();
-        video.currentTime = 0;
-        readyRef.current = true;
-      } catch {
-        setTimeout(prime, 300);
-      }
-    };
-    if (video.readyState >= 2) prime();
-    else video.addEventListener('loadeddata', prime, { once: true });
+    let ready = false;
+    let lastP = 0;
 
-    let rafId: number;
-    const sync = () => {
-      if (readyRef.current && video.duration) {
-        video.currentTime = progressRef.current * video.duration;
+    video.muted = true;
+    const playPromise = video.play();
+    if (playPromise) playPromise.catch(() => {});
+
+    const seekTo = (p: number) => {
+      lastP = p;
+      if (video.duration) {
+        video.currentTime = p * video.duration;
       }
-      rafId = requestAnimationFrame(sync);
     };
-    rafId = requestAnimationFrame(sync);
 
     const onScroll = () => {
       const rect = section.getBoundingClientRect();
       const scrollable = section.offsetHeight - window.innerHeight;
       const raw = -rect.top / scrollable;
       const p = Math.min(1, Math.max(0, raw));
-      progressRef.current = p;
+      seekTo(p);
 
       if (heroTextRef.current) {
         const opacity = Math.max(0, 1 - p / 0.08);
@@ -78,10 +69,18 @@ export default function Hero({ data }: HeroProps) {
       }
     };
 
+    const rafLoop = () => {
+      if (video.duration && video.readyState >= 2) {
+        video.currentTime = lastP * video.duration;
+      }
+      syncRef.current = requestAnimationFrame(rafLoop);
+    };
+    syncRef.current = requestAnimationFrame(rafLoop);
+
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => {
       window.removeEventListener('scroll', onScroll);
-      cancelAnimationFrame(rafId);
+      cancelAnimationFrame(syncRef.current);
       video.pause();
     };
   }, []);
