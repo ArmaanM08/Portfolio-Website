@@ -23,7 +23,6 @@ export default function Hero({ data }: HeroProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const heroTextRef = useRef<HTMLDivElement>(null);
   const prevVisibleRef = useRef('');
-  const syncRef = useRef<number>(0);
   const [visibleCards, setVisibleCards] = useState<string[]>([]);
 
   useEffect(() => {
@@ -31,36 +30,26 @@ export default function Hero({ data }: HeroProps) {
     const section = sectionRef.current;
     if (!video || !section) return;
 
-    let ready = false;
-    let lastP = 0;
+    video.pause();
 
-    video.muted = true;
-    const playPromise = video.play();
-    if (playPromise) playPromise.catch(() => {});
-
-    const seekTo = (p: number) => {
-      lastP = p;
-      if (video.duration) {
-        video.currentTime = p * video.duration;
-      }
-    };
-
-    const onScroll = () => {
+    const updateVideo = () => {
       const rect = section.getBoundingClientRect();
-      const scrollable = section.offsetHeight - window.innerHeight;
-      const raw = -rect.top / scrollable;
-      const p = Math.min(1, Math.max(0, raw));
-      seekTo(p);
+      const scrollRange = section.offsetHeight - window.innerHeight;
+      const progress = Math.min(1, Math.max(0, -rect.top / scrollRange));
+
+      if (video.readyState >= 1 && Number.isFinite(video.duration)) {
+        video.currentTime = progress * video.duration;
+      }
 
       if (heroTextRef.current) {
-        const opacity = Math.max(0, 1 - p / 0.08);
+        const opacity = Math.max(0, 1 - progress / 0.08);
         heroTextRef.current.style.opacity = String(opacity);
-        heroTextRef.current.style.transform = `translateY(${p * 30}px)`;
+        heroTextRef.current.style.transform = `translateY(${progress * 30}px)`;
         heroTextRef.current.style.pointerEvents = opacity > 0 ? 'auto' : 'none';
       }
 
       const visible = ANNOTATIONS
-        .filter((a) => p >= a.show && p < a.hide)
+        .filter((a) => progress >= a.show && progress < a.hide)
         .map((a) => a.id);
       const key = [...visible].sort().join(',');
       if (key !== prevVisibleRef.current) {
@@ -69,19 +58,11 @@ export default function Hero({ data }: HeroProps) {
       }
     };
 
-    const rafLoop = () => {
-      if (video.duration && video.readyState >= 2) {
-        video.currentTime = lastP * video.duration;
-      }
-      syncRef.current = requestAnimationFrame(rafLoop);
-    };
-    syncRef.current = requestAnimationFrame(rafLoop);
+    window.addEventListener('scroll', updateVideo, { passive: true });
+    updateVideo();
 
-    window.addEventListener('scroll', onScroll, { passive: true });
     return () => {
-      window.removeEventListener('scroll', onScroll);
-      cancelAnimationFrame(syncRef.current);
-      video.pause();
+      window.removeEventListener('scroll', updateVideo);
     };
   }, []);
 
