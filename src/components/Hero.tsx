@@ -8,6 +8,70 @@ const ANNOTATIONS = [
   { id: 'innovate', label: 'Machine Learning', show: 0.50, hide: 0.85 },
 ];
 
+const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@$%&';
+
+function useScramble(text: string, active: boolean, duration = 1200) {
+  const [display, setDisplay] = useState(active ? text : '');
+
+  useEffect(() => {
+    if (!active) return;
+    let raf = 0;
+    let start = 0;
+    const step = (t: number) => {
+      if (!start) start = t;
+      const p = Math.min(1, (t - start) / duration);
+      const revealCount = Math.floor(p * text.length);
+      let out = '';
+      for (let i = 0; i < text.length; i++) {
+        const ch = text[i];
+        if (ch === ' ') out += ' ';
+        else if (i < revealCount) out += ch;
+        else out += SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+      }
+      setDisplay(out);
+      if (p < 1) raf = requestAnimationFrame(step);
+      else setDisplay(text);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [text, active, duration]);
+
+  return display;
+}
+
+function ScrambleLabel({ label, active, side }: { label: string; active: boolean; side: 'left' | 'right' }) {
+  const upper = label.toUpperCase();
+  const display = useScramble(upper, active);
+  const [settled, setSettled] = useState(false);
+
+  useEffect(() => {
+    if (!active) return;
+    const t = setTimeout(() => setSettled(true), 1250);
+    return () => {
+      clearTimeout(t);
+      setSettled(false);
+    };
+  }, [active]);
+
+  return (
+    <div
+      className={`${styles.annotation} ${active ? styles.annotationVisible : ''} ${settled ? styles.annotationSettled : ''}`}
+      style={
+        side === 'left'
+          ? { top: '30%', left: '5%', right: 'auto' }
+          : { top: '55%', left: 'auto', right: '5%' }
+      }
+    >
+      <span className={styles.annotationDot} />
+      <span className={styles.annotationLine} />
+      <span className={styles.annotationBadge}>
+        <span className={styles.annotationGlow} aria-hidden="true">{upper}</span>
+        <span className={styles.annotationText}>{display || '\u00A0'}</span>
+      </span>
+    </div>
+  );
+}
+
 interface HeroProps {
   data: {
     greeting: string;
@@ -149,20 +213,12 @@ export default function Hero({ data }: HeroProps) {
         </div>
 
         {ANNOTATIONS.map((a) => (
-          <div
+          <ScrambleLabel
             key={a.id}
-            className={`${styles.annotation} ${visibleCards.includes(a.id) ? styles.annotationVisible : ''}`}
-            style={{
-              top: a.id === 'discover' ? '30%' : '55%',
-              left: a.id === 'discover' ? '5%' : 'auto',
-              right: a.id === 'discover' ? 'auto' : '5%',
-            }}
-          >
-            <div className={styles.annotationDot} />
-            <div className={styles.annotationContent}>
-              <span className={styles.annotationLabel}>{a.label}</span>
-            </div>
-          </div>
+            label={a.label}
+            active={visibleCards.includes(a.id)}
+            side={a.id === 'discover' ? 'left' : 'right'}
+          />
         ))}
 
         <div className={styles.scrollHint}>
