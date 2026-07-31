@@ -8,8 +8,8 @@
   position: absolute;
   top: 20%;
   right: -10%;
-  width: 400px;
-  height: 400px;
+  width: min(400px, 50vw);
+  height: min(400px, 50vw);
   background: var(--gradient-overlay);
   border-radius: 50%;
   filter: blur(100px);
@@ -129,11 +129,27 @@
     font-size: 1.1rem;
     margin-bottom: 2rem;
   }
+
+  .section::before {
+    width: min(300px, 60vw);
+    height: min(300px, 60vw);
+  }
 }
 
 @media (max-width: 480px) {
   .socials {
     flex-direction: column;
     gap: 1rem;
+  }
+}
+
+@media (min-width: 1400px) {
+  .contactCard {
+    max-width: 800px;
+    padding: 5rem 4rem;
+  }
+
+  .message {
+    font-size: 1.35rem;
   }
 }

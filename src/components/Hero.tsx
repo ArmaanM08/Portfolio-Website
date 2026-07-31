@@ -23,31 +23,26 @@ export default function Hero({ data }: HeroProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const heroTextRef = useRef<HTMLDivElement>(null);
   const prevVisibleRef = useRef('');
+  const lastTimeRef = useRef(-1);
   const [visibleCards, setVisibleCards] = useState<string[]>([]);
 
   useEffect(() => {
     const video = videoRef.current;
     const section = sectionRef.current;
-    if (!video || !section) return;
+    const heroText = heroTextRef.current;
+    if (!video || !section || !heroText) return;
 
-    video.pause();
+    let rafId = 0;
+    let inView = false;
 
-    const updateVideo = () => {
-      const rect = section.getBoundingClientRect();
-      const scrollRange = section.offsetHeight - window.innerHeight;
-      const progress = Math.min(1, Math.max(0, -rect.top / scrollRange));
+    const updateHeroText = (progress: number) => {
+      const opacity = Math.max(0, 1 - progress / 0.08);
+      heroText.style.opacity = String(opacity);
+      heroText.style.transform = `translateY(${progress * 30}px)`;
+      heroText.style.pointerEvents = opacity > 0 ? 'auto' : 'none';
+    };
 
-      if (video.readyState >= 1 && Number.isFinite(video.duration)) {
-        video.currentTime = progress * video.duration;
-      }
-
-      if (heroTextRef.current) {
-        const opacity = Math.max(0, 1 - progress / 0.08);
-        heroTextRef.current.style.opacity = String(opacity);
-        heroTextRef.current.style.transform = `translateY(${progress * 30}px)`;
-        heroTextRef.current.style.pointerEvents = opacity > 0 ? 'auto' : 'none';
-      }
-
+    const updateAnnotations = (progress: number) => {
       const visible = ANNOTATIONS
         .filter((a) => progress >= a.show && progress < a.hide)
         .map((a) => a.id);
@@ -58,11 +53,66 @@ export default function Hero({ data }: HeroProps) {
       }
     };
 
-    window.addEventListener('scroll', updateVideo, { passive: true });
-    updateVideo();
+    const render = () => {
+      rafId = requestAnimationFrame(render);
+      if (!inView) return;
+
+      const rect = section.getBoundingClientRect();
+      const scrollRange = section.offsetHeight - window.innerHeight;
+      if (scrollRange <= 0) return;
+      const progress = Math.min(1, Math.max(0, -rect.top / scrollRange));
+
+      if (video.readyState >= 1 && Number.isFinite(video.duration) && video.duration > 0) {
+        const target = progress * video.duration;
+        if (Math.abs(target - lastTimeRef.current) > 0.005) {
+          lastTimeRef.current = target;
+          video.currentTime = target;
+        }
+      }
+
+      updateHeroText(progress);
+      updateAnnotations(progress);
+    };
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        inView = entry.isIntersecting;
+        if (inView && !rafId) {
+          rafId = requestAnimationFrame(render);
+        } else if (!inView && rafId) {
+          cancelAnimationFrame(rafId);
+          rafId = 0;
+        }
+      },
+      { threshold: 0.05 }
+    );
+    io.observe(section);
+
+    video.pause();
+
+    const unlock = () => {
+      const p = video.play();
+      if (p) {
+        p.then(() => {
+          video.pause();
+        }).catch(() => {});
+      }
+    };
+    if (video.readyState >= 2) unlock();
+    else video.addEventListener('canplay', unlock, { once: true });
+
+    const onVisibility = () => {
+      if (!document.hidden) {
+        lastTimeRef.current = -1;
+      }
+    };
+    document.addEventListener('visibilitychange', onVisibility);
 
     return () => {
-      window.removeEventListener('scroll', updateVideo);
+      cancelAnimationFrame(rafId);
+      io.disconnect();
+      video.removeEventListener('canplay', unlock);
+      document.removeEventListener('visibilitychange', onVisibility);
     };
   }, []);
 

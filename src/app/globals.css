@@ -111,6 +111,12 @@ ul {
   margin-bottom: 1rem;
 }
 
+@media (max-width: 768px) {
+  .bold-heading {
+    font-size: clamp(2.2rem, 9vw, 3.5rem);
+  }
+}
+
 .gradient-text {
   background: var(--accent-gradient);
   -webkit-background-clip: text;
@@ -286,6 +292,32 @@ ul {
   color: var(--accent-color);
 }
 
+/* Hamburger */
+.hamburger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  color: var(--text-color);
+  cursor: pointer;
+  z-index: 102;
+  box-shadow: var(--pill-shadow);
+  transition: all 0.3s ease;
+}
+
+.hamburger:hover {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+.nav-overlay {
+  display: none;
+}
+
 /* Eyebrow Badge */
 .eyebrow-badge {
   display: inline-flex;
@@ -310,6 +342,12 @@ ul {
   padding: 8rem 0;
 }
 
+@media (max-width: 1024px) {
+  .nav-links {
+    gap: 1.5rem;
+  }
+}
+
 @media (max-width: 768px) {
   .section-padding {
     padding: 4rem 0;
@@ -323,9 +361,48 @@ ul {
     padding: 1rem 0;
   }
 
+  .hamburger {
+    display: flex;
+  }
+
   .nav-links {
-    gap: 1rem;
-    font-size: 0.85rem;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: min(320px, 80vw);
+    height: 100vh;
+    height: 100dvh;
+    flex-direction: column;
+    gap: 0;
+    padding: 5rem 2rem 2rem;
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom));
+    background: var(--navbar-bg);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-left: 1px solid var(--card-border);
+    transition: right 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 101;
+    align-items: flex-start;
+  }
+
+  .nav-links-open {
+    right: 0;
+  }
+
+  .nav-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 100;
+    backdrop-filter: blur(4px);
+  }
+
+  .nav-link {
+    font-size: 1.1rem;
+    padding: 0.75rem 0;
+    width: 100%;
+    border-bottom: 1px solid var(--card-border);
   }
 
   .logo {
@@ -335,6 +412,27 @@ ul {
   .btn {
     padding: 0.8rem 1.5rem;
     font-size: 0.9rem;
+  }
+}
+
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1400px;
+    padding: 0 3rem;
+  }
+
+  .section-padding {
+    padding: 10rem 0;
+  }
+}
+
+@media (min-width: 1800px) {
+  .container {
+    max-width: 1600px;
+  }
+
+  .section-padding {
+    padding: 12rem 0;
   }
 }
 

@@ -8,8 +8,8 @@
   position: absolute;
   bottom: -20%;
   left: -5%;
-  width: 400px;
-  height: 400px;
+  width: min(400px, 50vw);
+  height: min(400px, 50vw);
   background: var(--gradient-overlay);
   border-radius: 50%;
   filter: blur(120px);
@@ -113,10 +113,6 @@
     margin-bottom: 2rem;
   }
 
-  .heading {
-    font-size: 3rem;
-  }
-
   .card {
     padding: 1.5rem;
   }
@@ -132,5 +128,24 @@
 
   .bullet {
     font-size: 0.88rem;
+  }
+
+  .section::before {
+    width: min(300px, 60vw);
+    height: min(300px, 60vw);
+  }
+}
+
+@media (min-width: 1400px) {
+  .list {
+    max-width: 900px;
+  }
+
+  .card {
+    padding: 2.5rem;
+  }
+
+  .company {
+    font-size: 1.6rem;
   }
 }

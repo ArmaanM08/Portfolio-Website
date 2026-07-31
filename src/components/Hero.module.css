@@ -7,6 +7,7 @@
   position: sticky;
   top: 0;
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   background: #000;
 }
@@ -17,7 +18,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: scale(1.5);
+  transform: scale(1.4);
   pointer-events: none;
 }
 
@@ -70,6 +71,7 @@
   line-height: 1.05;
   color: #ffffff;
   text-shadow: 0 2px 30px rgba(0, 0, 0, 0.4);
+  overflow-wrap: break-word;
 }
 
 .titleBreak {
@@ -138,7 +140,7 @@
 
 .scrollHint {
   position: absolute;
-  bottom: 5%;
+  bottom: calc(5% + env(safe-area-inset-bottom));
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
@@ -177,24 +179,43 @@
   50% { opacity: 0.2; transform: translateY(6px); }
 }
 
+@media (max-width: 1024px) {
+  .heroText {
+    bottom: 18%;
+    left: 3%;
+    right: 3%;
+    max-width: 600px;
+  }
+}
+
 @media (max-width: 768px) {
   .section {
-    height: 200vh;
+    height: 220vh;
+  }
+
+  .video {
+    transform: scale(1.5);
   }
 
   .heroText {
-    bottom: 15%;
-    left: 1rem;
-    right: 1rem;
+    bottom: calc(12% + env(safe-area-inset-bottom));
+    left: 0.75rem;
+    right: 0.75rem;
     max-width: none;
   }
 
   .textBackdrop {
-    padding: 1.25rem;
+    padding: 1.25rem 1.15rem;
+    border-radius: 18px;
+    gap: 0.75rem;
   }
 
   .title {
-    font-size: clamp(1.8rem, 8vw, 3rem);
+    font-size: clamp(1.75rem, 9vw, 2.75rem);
+  }
+
+  .description {
+    font-size: 0.95rem;
   }
 
   .annotation {
@@ -204,10 +225,34 @@
 
 @media (max-width: 480px) {
   .section {
-    height: 175vh;
+    height: 200vh;
   }
 
   .video {
-    transform: scale(2);
+    transform: scale(1.8);
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .section {
+    height: 300vh;
+  }
+
+  .heroText {
+    bottom: 10%;
+    max-width: 500px;
+  }
+
+  .textBackdrop {
+    padding: 1rem 1.5rem;
+    gap: 0.5rem;
+  }
+
+  .title {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+  }
+
+  .scrollHint {
+    display: none;
   }
 }

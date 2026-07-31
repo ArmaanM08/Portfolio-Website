@@ -8,8 +8,8 @@
   position: absolute;
   top: -30%;
   right: -10%;
-  width: 500px;
-  height: 500px;
+  width: min(500px, 60vw);
+  height: min(500px, 60vw);
   background: var(--gradient-overlay);
   border-radius: 50%;
   filter: blur(120px);
@@ -118,12 +118,9 @@
     margin-bottom: 2rem;
   }
 
-  .heading {
-    font-size: 3rem;
-  }
-
   .grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
   .cardHeader h3 {
@@ -132,5 +129,34 @@
 
   .cardContent {
     padding: 1.25rem;
+  }
+
+  .section::before {
+    width: min(400px, 80vw);
+    height: min(400px, 80vw);
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1400px) {
+  .headerWrap {
+    margin-bottom: 5rem;
+  }
+
+  .grid {
+    gap: 2rem;
+  }
+
+  .cardContent {
+    padding: 2.25rem;
+  }
+
+  .cardHeader h3 {
+    font-size: 1.5rem;
   }
 }
