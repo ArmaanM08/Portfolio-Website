@@ -13,6 +13,7 @@ interface Skill {
 
 interface SkillsProps {
   data: Skill[];
+  projectsCount?: number;
 }
 
 const container = {
@@ -61,8 +62,13 @@ function CountUp({ to, suffix }: { to: number; suffix: string }) {
   );
 }
 
-export default function Skills({ data }: SkillsProps) {
+export default function Skills({ data, projectsCount = 0 }: SkillsProps) {
   const categories = Array.from(new Set(data.map((s) => s.category)));
+  const stats = [
+    { to: data.length, suffix: '+', label: 'Core Technologies' },
+    { to: categories.length, suffix: '', label: 'Skill Categories' },
+    { to: projectsCount, suffix: '', label: 'Projects Shipped' },
+  ];
 
   return (
     <section id="skills" className={`section-padding ${styles.section}`}>
@@ -79,10 +85,12 @@ export default function Skills({ data }: SkillsProps) {
             Technical <br /><span className="gradient-text">Arsenal</span>
           </h2>
           <div className={styles.statsCard}>
-            <div className={styles.statItem}>
-              <CountUp to={data.length} suffix="+" />
-              <span className={styles.statLabel}>Core Technologies</span>
-            </div>
+            {stats.map((s) => (
+              <div key={s.label} className={styles.statItem}>
+                <CountUp to={s.to} suffix={s.suffix} />
+                <span className={styles.statLabel}>{s.label}</span>
+              </div>
+            ))}
           </div>
         </motion.div>
 

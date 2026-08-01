@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 import Magnetic from './Magnetic';
 import styles from './Hero.module.css';
 
@@ -10,6 +10,57 @@ const ANNOTATIONS = [
 ];
 
 const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@$%&';
+
+// Prefetches the whole video into a Blob and feeds it to the <video> via an
+// object URL. Once fully loaded, seeking/scrubbing is instant because every
+// frame lives in memory — no network round-trips to fetch byte ranges that
+// may still be buffering (the cause of the video "sticking" on slow links).
+function useBlobVideo(
+  ref: React.RefObject<HTMLVideoElement | null>,
+  src: string,
+  getTarget: () => number
+) {
+  useEffect(() => {
+    const video = ref.current;
+    if (!video) return;
+    let cancelled = false;
+    let objectUrl: string | null = null;
+
+    const apply = (url: string) => {
+      if (cancelled) return;
+      objectUrl = url;
+      const restore = () => {
+        const t = getTarget();
+        if (Number.isFinite(t)) {
+          try {
+            video.currentTime = t;
+          } catch {
+            /* ignore */
+          }
+        }
+      };
+      video.addEventListener('loadedmetadata', restore, { once: true });
+      video.src = url;
+    };
+
+    fetch(src, { cache: 'force-cache' })
+      .then((r) => {
+        if (!r.ok) throw new Error('video prefetch failed');
+        return r.blob();
+      })
+      .then((blob) => {
+        if (!cancelled) apply(URL.createObjectURL(blob));
+      })
+      .catch(() => {
+        // Keep the original streaming src as a fallback.
+      });
+
+    return () => {
+      cancelled = true;
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  }, [ref, src, getTarget]);
+}
 
 function useScramble(text: string, active: boolean, duration = 1200) {
   const [display, setDisplay] = useState(active ? text : '');
@@ -96,6 +147,13 @@ export default function Hero({ data }: HeroProps) {
       : true
   );
   const [visibleCards, setVisibleCards] = useState<string[]>([]);
+
+  const getTarget = useCallback(
+    () => (Number.isFinite(lastTimeRef.current) ? lastTimeRef.current : 0),
+    []
+  );
+  useBlobVideo(darkVideoRef, '/hero-video.mp4', getTarget);
+  useBlobVideo(lightVideoRef, '/white-bg-video.mp4', getTarget);
 
   useEffect(() => {
     const el = document.documentElement;
@@ -211,7 +269,7 @@ export default function Hero({ data }: HeroProps) {
   }, []);
 
   return (
-    <section ref={sectionRef} className={styles.section}>
+    <section ref={sectionRef} id="top" className={styles.section}>
       <div className={styles.sticky}>
         <video
           ref={darkVideoRef}
@@ -220,6 +278,7 @@ export default function Hero({ data }: HeroProps) {
           playsInline
           preload="auto"
           aria-hidden={!isDark}
+          poster="/hero-poster.jpg"
           src="/hero-video.mp4"
         />
         <video
@@ -229,6 +288,7 @@ export default function Hero({ data }: HeroProps) {
           playsInline
           preload="auto"
           aria-hidden={isDark}
+          poster="/white-bg-poster.jpg"
           src="/white-bg-video.mp4"
         />
 

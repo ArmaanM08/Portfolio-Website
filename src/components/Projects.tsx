@@ -9,6 +9,9 @@ interface Project {
   description: string;
   tags: string[];
   link: string;
+  featured?: boolean;
+  repo?: string | null;
+  demo?: string | null;
 }
 
 interface ProjectsProps {
@@ -31,7 +34,35 @@ const item = {
   },
 };
 
+function ProjectLink({ href, label }: { href: string; label: string }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={styles.projectLink}
+    >
+      {label}
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <line x1="5" y1="12" x2="19" y2="12" />
+        <polyline points="12 5 19 12 12 19" />
+      </svg>
+    </a>
+  );
+}
+
 export default function Projects({ data }: ProjectsProps) {
+  const [featured, ...rest] = data;
+
   return (
     <section id="projects" className={`section-padding ${styles.section}`}>
       <div className="container">
@@ -55,12 +86,50 @@ export default function Projects({ data }: ProjectsProps) {
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
         >
-          {data.map((project) => (
-            <motion.a
+          {featured && (
+            <motion.div
+              key={featured.id}
+              className={`${styles.projectCard} ${styles.featured}`}
+              variants={item}
+              onMouseMove={(e) => {
+                const el = e.currentTarget;
+                const rect = el.getBoundingClientRect();
+                el.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+                el.style.setProperty('--my', `${e.clientY - rect.top}px`);
+              }}
+            >
+              <div className={styles.cardContent}>
+                <div className={styles.cardHeader}>
+                  <span className={styles.index}>01</span>
+                  <span className={styles.featuredBadge}>Featured</span>
+                </div>
+                <h3 className={styles.cardTitle}>
+                  <a
+                    href={featured.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.cardTitleLink}
+                  >
+                    {featured.title}
+                  </a>
+                </h3>
+                <p className={styles.cardDesc}>{featured.description}</p>
+                <div className={styles.tags}>
+                  {featured.tags.map((tag) => (
+                    <span key={tag} className={styles.tag}>{tag}</span>
+                  ))}
+                </div>
+                <div className={styles.cardLinks}>
+                  {featured.repo && <ProjectLink href={featured.repo} label="Code" />}
+                  {featured.demo && <ProjectLink href={featured.demo} label="Live Demo" />}
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {rest.map((project, i) => (
+            <motion.div
               key={project.id}
-              href={project.link}
-              target="_blank"
-              rel="noopener noreferrer"
               className={styles.projectCard}
               variants={item}
               onMouseMove={(e) => {
@@ -72,17 +141,33 @@ export default function Projects({ data }: ProjectsProps) {
             >
               <div className={styles.cardContent}>
                 <div className={styles.cardHeader}>
-                  <h3>{project.title}</h3>
+                  <span className={styles.index}>
+                    {String(i + 2).padStart(2, '0')}
+                  </span>
                   <span className={styles.iconLink}>↗</span>
                 </div>
+                <h3 className={styles.cardTitle}>
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.cardTitleLink}
+                  >
+                    {project.title}
+                  </a>
+                </h3>
                 <p className={styles.cardDesc}>{project.description}</p>
                 <div className={styles.tags}>
                   {project.tags.map((tag) => (
                     <span key={tag} className={styles.tag}>{tag}</span>
                   ))}
                 </div>
+                <div className={styles.cardLinks}>
+                  {project.repo && <ProjectLink href={project.repo} label="Code" />}
+                  {project.demo && <ProjectLink href={project.demo} label="Live Demo" />}
+                </div>
               </div>
-            </motion.a>
+            </motion.div>
           ))}
         </motion.div>
       </div>
