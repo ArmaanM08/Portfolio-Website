@@ -1,6 +1,7 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { motion, useInView } from 'framer-motion';
 import styles from './Skills.module.css';
 
 interface Skill {
@@ -30,6 +31,36 @@ const item = {
   },
 };
 
+function CountUp({ to, suffix }: { to: number; suffix: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: '-50px' });
+  const [val, setVal] = useState(0);
+
+  useEffect(() => {
+    if (!inView) return;
+    let raf = 0;
+    let start: number | null = null;
+    const duration = 1400;
+
+    const step = (t: number) => {
+      if (start === null) start = t;
+      const p = Math.min(1, (t - start) / duration);
+      setVal(Math.round(p * to));
+      if (p < 1) raf = requestAnimationFrame(step);
+    };
+
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [inView, to]);
+
+  return (
+    <span className={styles.statNumber} ref={ref}>
+      {val}
+      {suffix}
+    </span>
+  );
+}
+
 export default function Skills({ data }: SkillsProps) {
   const categories = Array.from(new Set(data.map((s) => s.category)));
 
@@ -49,7 +80,7 @@ export default function Skills({ data }: SkillsProps) {
           </h2>
           <div className={styles.statsCard}>
             <div className={styles.statItem}>
-              <span className={styles.statNumber}>{data.length}+</span>
+              <CountUp to={data.length} suffix="+" />
               <span className={styles.statLabel}>Core Technologies</span>
             </div>
           </div>

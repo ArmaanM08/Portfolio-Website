@@ -63,6 +63,12 @@ export default function Projects({ data }: ProjectsProps) {
               rel="noopener noreferrer"
               className={styles.projectCard}
               variants={item}
+              onMouseMove={(e) => {
+                const el = e.currentTarget;
+                const rect = el.getBoundingClientRect();
+                el.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+                el.style.setProperty('--my', `${e.clientY - rect.top}px`);
+              }}
             >
               <div className={styles.cardContent}>
                 <div className={styles.cardHeader}>

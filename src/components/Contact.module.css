@@ -14,6 +14,31 @@
   border-radius: 50%;
   filter: blur(100px);
   pointer-events: none;
+  animation: blobDrift 21s ease-in-out infinite alternate;
+}
+
+.section::after {
+  content: '';
+  position: absolute;
+  bottom: -10%;
+  left: -5%;
+  width: min(320px, 45vw);
+  height: min(320px, 45vw);
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.18), transparent 70%);
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+  animation: blobRise 25s ease-in-out infinite alternate;
+}
+
+@keyframes blobDrift {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(-30px, -25px) scale(1.12); }
+}
+
+@keyframes blobRise {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(30px, 30px) scale(1.15); }
 }
 
 .container {
@@ -41,6 +66,44 @@
   border-radius: 24px;
   background: var(--gradient-overlay);
   pointer-events: none;
+}
+
+.contactCard::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--angle, 0deg),
+    transparent 0%,
+    rgba(124, 58, 237, 0.9) 12%,
+    rgba(167, 139, 250, 0.9) 26%,
+    transparent 40%,
+    transparent 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  animation: borderSpin 5s linear infinite;
+  pointer-events: none;
+}
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.contactCard:hover::after {
+  opacity: 0.8;
+}
+
+@keyframes borderSpin {
+  to { --angle: 360deg; }
 }
 
 .heading {
@@ -151,5 +214,13 @@
 
   .message {
     font-size: 1.35rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section::before,
+  .section::after,
+  .contactCard::after {
+    animation: none;
   }
 }

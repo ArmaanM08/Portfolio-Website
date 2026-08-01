@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
+import Magnetic from './Magnetic';
 import styles from './Hero.module.css';
 
 const ANNOTATIONS = [
@@ -84,20 +85,36 @@ interface HeroProps {
 
 export default function Hero({ data }: HeroProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const darkVideoRef = useRef<HTMLVideoElement>(null);
+  const lightVideoRef = useRef<HTMLVideoElement>(null);
   const heroTextRef = useRef<HTMLDivElement>(null);
   const prevVisibleRef = useRef('');
   const lastTimeRef = useRef(-1);
+  const [isDark, setIsDark] = useState(
+    () => typeof document !== 'undefined'
+      ? document.documentElement.getAttribute('data-theme') !== 'light'
+      : true
+  );
   const [visibleCards, setVisibleCards] = useState<string[]>([]);
 
   useEffect(() => {
-    const video = videoRef.current;
+    const el = document.documentElement;
+    const sync = () => setIsDark(el.getAttribute('data-theme') !== 'light');
+    const mo = new MutationObserver(sync);
+    mo.observe(el, { attributes: true, attributeFilter: ['data-theme'] });
+    return () => mo.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const darkVideo = darkVideoRef.current;
+    const lightVideo = lightVideoRef.current;
     const section = sectionRef.current;
     const heroText = heroTextRef.current;
-    if (!video || !section || !heroText) return;
+    if (!darkVideo || !lightVideo || !section || !heroText) return;
 
     let rafId = 0;
     let inView = false;
+    const videos = [darkVideo, lightVideo];
 
     const updateHeroText = (progress: number) => {
       const opacity = Math.max(0, 1 - progress / 0.08);
@@ -126,11 +143,20 @@ export default function Hero({ data }: HeroProps) {
       if (scrollRange <= 0) return;
       const progress = Math.min(1, Math.max(0, -rect.top / scrollRange));
 
-      if (video.readyState >= 1 && Number.isFinite(video.duration) && video.duration > 0) {
-        const target = progress * video.duration;
+      let duration = NaN;
+      for (const v of videos) {
+        if (v.readyState >= 1 && Number.isFinite(v.duration) && v.duration > 0) {
+          duration = v.duration;
+          break;
+        }
+      }
+      if (Number.isFinite(duration)) {
+        const target = progress * duration;
         if (Math.abs(target - lastTimeRef.current) > 0.005) {
           lastTimeRef.current = target;
-          video.currentTime = target;
+          for (const v of videos) {
+            if (v.readyState >= 1) v.currentTime = target;
+          }
         }
       }
 
@@ -152,18 +178,22 @@ export default function Hero({ data }: HeroProps) {
     );
     io.observe(section);
 
-    video.pause();
-
-    const unlock = () => {
-      const p = video.play();
+    const unlock = (v: HTMLVideoElement) => {
+      const p = v.play();
       if (p) {
         p.then(() => {
-          video.pause();
+          v.pause();
         }).catch(() => {});
       }
     };
-    if (video.readyState >= 2) unlock();
-    else video.addEventListener('canplay', unlock, { once: true });
+    const unlockers = videos.map((v) => {
+      const h = () => unlock(v);
+      return { v, h };
+    });
+    for (const { v, h } of unlockers) {
+      if (v.readyState >= 2) unlock(v);
+      else v.addEventListener('canplay', h, { once: true });
+    }
 
     const onVisibility = () => {
       if (!document.hidden) {
@@ -175,7 +205,7 @@ export default function Hero({ data }: HeroProps) {
     return () => {
       cancelAnimationFrame(rafId);
       io.disconnect();
-      video.removeEventListener('canplay', unlock);
+      for (const { v, h } of unlockers) v.removeEventListener('canplay', h);
       document.removeEventListener('visibilitychange', onVisibility);
     };
   }, []);
@@ -184,16 +214,25 @@ export default function Hero({ data }: HeroProps) {
     <section ref={sectionRef} className={styles.section}>
       <div className={styles.sticky}>
         <video
-          ref={videoRef}
-          className={styles.video}
+          ref={darkVideoRef}
+          className={`${styles.video} ${isDark ? styles.videoActive : styles.videoInactive}`}
           muted
           playsInline
           preload="auto"
+          aria-hidden={!isDark}
           src="/hero-video.mp4"
+        />
+        <video
+          ref={lightVideoRef}
+          className={`${styles.video} ${isDark ? styles.videoInactive : styles.videoActive}`}
+          muted
+          playsInline
+          preload="auto"
+          aria-hidden={isDark}
+          src="/white-bg-video.mp4"
         />
 
         <div className={styles.overlay} />
-        <div className={styles.vignette} />
 
         <div ref={heroTextRef} className={styles.heroText}>
           <div className={styles.textBackdrop}>
@@ -203,12 +242,14 @@ export default function Hero({ data }: HeroProps) {
               <span>{data.title.split('&')[1]}</span>
             </h1>
             <p className={styles.description}>{data.description}</p>
-            <a href={data.ctaLink} className="btn">
-              {data.ctaText}
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
-              </svg>
-            </a>
+            <Magnetic>
+              <a href={data.ctaLink} className="btn">
+                {data.ctaText}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </Magnetic>
           </div>
         </div>
 

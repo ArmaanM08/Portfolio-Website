@@ -193,6 +193,23 @@ ul {
   background: var(--accent-subtle);
 }
 
+/* Scroll progress bar */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  transform-origin: 0% 50%;
+  background: var(--accent-gradient);
+  z-index: 200;
+}
+
+/* Magnetic button wrapper */
+.magnetic {
+  display: inline-flex;
+}
+
 /* Header */
 .header {
   position: fixed;

@@ -14,6 +14,31 @@
   border-radius: 50%;
   filter: blur(100px);
   pointer-events: none;
+  animation: blobDrift 18s ease-in-out infinite alternate;
+}
+
+.section::after {
+  content: '';
+  position: absolute;
+  top: 15%;
+  right: -8%;
+  width: min(320px, 40vw);
+  height: min(320px, 40vw);
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.18), transparent 70%);
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  animation: blobRise 22s ease-in-out infinite alternate;
+}
+
+@keyframes blobDrift {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(40px, -30px) scale(1.15); }
+}
+
+@keyframes blobRise {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(-30px, 40px) scale(1.1); }
 }
 
 .container {
@@ -114,6 +139,28 @@
   height: 100%;
   background: var(--gradient-accent);
   border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.progressBarFill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.45),
+    transparent
+  );
+  transform: translateX(-100%);
+  animation: barShine 2.4s ease-in-out infinite;
+}
+
+@keyframes barShine {
+  to {
+    transform: translateX(100%);
+  }
 }
 
 @media (max-width: 768px) {
@@ -153,5 +200,13 @@
 
   .statNumber {
     font-size: 3.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section::before,
+  .section::after,
+  .progressBarFill::after {
+    animation: none;
   }
 }

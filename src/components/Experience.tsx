@@ -56,7 +56,17 @@ export default function Experience({ data }: ExperienceProps) {
           viewport={{ once: true, margin: '-100px' }}
         >
           {data.map((exp) => (
-            <motion.div key={exp.id} className={styles.card} variants={item}>
+            <motion.div
+              key={exp.id}
+              className={styles.card}
+              variants={item}
+              onMouseMove={(e) => {
+                const el = e.currentTarget;
+                const rect = el.getBoundingClientRect();
+                el.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+                el.style.setProperty('--my', `${e.clientY - rect.top}px`);
+              }}
+            >
               <div className={styles.cardTop}>
                 <div>
                   <h3 className={styles.company}>{exp.company}</h3>

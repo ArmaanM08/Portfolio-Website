@@ -12,6 +12,10 @@
   background: #000;
 }
 
+[data-theme='light'] .sticky {
+  background: #ffffff;
+}
+
 .video {
   position: absolute;
   inset: 0;
@@ -20,6 +24,15 @@
   object-fit: cover;
   transform: scale(1.4);
   pointer-events: none;
+  transition: opacity 0.7s ease;
+}
+
+.videoActive {
+  opacity: 1;
+}
+
+.videoInactive {
+  opacity: 0;
 }
 
 .overlay {
@@ -35,12 +48,14 @@
   z-index: 1;
 }
 
-.vignette {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at center, transparent 35%, rgba(0, 0, 0, 0.75) 100%);
-  z-index: 1;
-  pointer-events: none;
+[data-theme='light'] .overlay {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(255, 255, 255, 0.2) 40%,
+    rgba(255, 255, 255, 0.1) 55%,
+    rgba(255, 255, 255, 0.45) 100%
+  );
 }
 
 .heroText {
@@ -221,6 +236,19 @@
   100% { transform: translate(0); filter: drop-shadow(0 0 18px rgba(124, 58, 237, 0.5)) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6)); }
 }
 
+[data-theme='light'] .annotationText {
+  background: linear-gradient(120deg, #1a1a1a 0%, #6d28d9 40%, #7c3aed 60%, #4c1d95 85%, #1a1a1a 100%);
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 14px rgba(124, 58, 237, 0.3)) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15));
+}
+
+[data-theme='light'] .annotationGlow {
+  color: rgba(124, 58, 237, 0.3);
+}
+
 .scrollHint {
   position: absolute;
   bottom: calc(5% + env(safe-area-inset-bottom));
@@ -237,6 +265,18 @@
   font-weight: 600;
   letter-spacing: 0.15em;
   text-transform: uppercase;
+}
+
+[data-theme='light'] .scrollHint {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+[data-theme='light'] .scrollMouse {
+  border-color: rgba(0, 0, 0, 0.35);
+}
+
+[data-theme='light'] .scrollWheel {
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .scrollMouse {

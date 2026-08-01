@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import Navbar from '../components/Navbar';
 import SmoothScrollProvider from '../components/SmoothScrollProvider';
+import ScrollProgress from '../components/ScrollProgress';
 
 export const metadata: Metadata = {
   title: 'Portfolio | Armaan Mulani',
@@ -34,6 +35,7 @@ export default function RootLayout({
       </head>
       <body>
         <SmoothScrollProvider>
+          <ScrollProgress />
           <Navbar />
           <main style={{ minHeight: '100vh' }}>
             {children}

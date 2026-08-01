@@ -4,8 +4,8 @@ export async function POST(request: Request) {
     try {
         const { password } = await request.json();
 
-        // Use a simple hardcoded password for MVP
-        const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'armaan123';
+        // Require the admin password from the environment; never hardcode a fallback
+        const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
         if (password === ADMIN_PASSWORD) {
             const response = NextResponse.json({ success: true });

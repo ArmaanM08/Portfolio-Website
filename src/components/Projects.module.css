@@ -14,6 +14,31 @@
   border-radius: 50%;
   filter: blur(120px);
   pointer-events: none;
+  animation: blobDrift 20s ease-in-out infinite alternate;
+}
+
+.section::after {
+  content: '';
+  position: absolute;
+  bottom: -15%;
+  left: -6%;
+  width: min(300px, 40vw);
+  height: min(300px, 40vw);
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.16), transparent 70%);
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+  animation: blobRise 24s ease-in-out infinite alternate;
+}
+
+@keyframes blobDrift {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(-40px, 30px) scale(1.15); }
+}
+
+@keyframes blobRise {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(30px, -30px) scale(1.12); }
 }
 
 .headerWrap {
@@ -43,12 +68,32 @@
   text-decoration: none;
   color: inherit;
   overflow: hidden;
+  position: relative;
+}
+
+.projectCard::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    320px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(124, 58, 237, 0.16),
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .projectCard:hover {
   transform: translateY(-6px);
-  box-shadow: var(--card-shadow-hover);
+  box-shadow: var(--card-shadow-hover), 0 0 40px rgba(124, 58, 237, 0.12);
   border-color: var(--accent-color);
+}
+
+.projectCard:hover::before {
+  opacity: 1;
 }
 
 .cardContent {
@@ -56,6 +101,8 @@
   flex-direction: column;
   padding: 1.75rem;
   flex: 1;
+  position: relative;
+  z-index: 1;
 }
 
 .cardHeader {
@@ -158,5 +205,12 @@
 
   .cardHeader h3 {
     font-size: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section::before,
+  .section::after {
+    animation: none;
   }
 }
