@@ -44,6 +44,7 @@ export default function Navbar() {
 
         <nav className={`nav-links ${menuOpen ? 'nav-links-open' : ''}`} aria-label="Main navigation">
           <Link href="/#projects" className="nav-link" onClick={() => setMenuOpen(false)}>Projects</Link>
+          <Link href="/#certifications" className="nav-link" onClick={() => setMenuOpen(false)}>Certifications</Link>
           <Link href="/#skills" className="nav-link" onClick={() => setMenuOpen(false)}>Skills</Link>
           <Link href="/#contact" className="nav-link" onClick={() => setMenuOpen(false)}>Contact</Link>
           <ThemeToggle />

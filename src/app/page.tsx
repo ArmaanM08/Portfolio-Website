@@ -2,6 +2,7 @@ import Hero from '../components/Hero';
 import Marquee from '../components/Marquee';
 import Projects from '../components/Projects';
 import Experience from '../components/Experience';
+import Certifications from '../components/Certifications';
 import Skills from '../components/Skills';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
@@ -21,6 +22,7 @@ export default async function Home() {
       <Marquee />
       <Experience data={portfolioData.experience} education={portfolioData.education} />
       <Projects data={portfolioData.projects} />
+      <Certifications data={portfolioData.certifications} />
       <Skills data={portfolioData.skills} projectsCount={portfolioData.projects.length} />
       <Contact data={portfolioData.contact} />
       <Footer />

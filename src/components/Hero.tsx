@@ -298,8 +298,12 @@ export default function Hero({ data }: HeroProps) {
           <div className={styles.textBackdrop}>
             <h1 className={styles.title}>
               <span className="gradient-text">{data.title.split('&')[0]}</span>
-              <span className={styles.titleBreak}>&</span>
-              <span>{data.title.split('&')[1]}</span>
+              {data.title.split('&')[1] !== undefined && (
+                <>
+                  <span className={styles.titleBreak}>&</span>
+                  <span>{data.title.split('&')[1]}</span>
+                </>
+              )}
             </h1>
             <p className={styles.description}>{data.description}</p>
             <Magnetic>

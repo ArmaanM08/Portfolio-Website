@@ -61,7 +61,8 @@ function ProjectLink({ href, label }: { href: string; label: string }) {
 }
 
 export default function Projects({ data }: ProjectsProps) {
-  const [featured, ...rest] = data;
+  const featured = data.find((p) => p.featured) ?? data[0];
+  const rest = data.filter((p) => p !== featured);
 
   return (
     <section id="projects" className={`section-padding ${styles.section}`}>

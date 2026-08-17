@@ -34,19 +34,28 @@
   "projects": [
     {
       "id": "1",
-      "title": "SME Analytics Dashboard",
-      "description": "A comprehensive dashboard for predicting the risk score of loan repayment using machine learning models.",
-      "tags": ["Python", "ML", "Netlify"],
+      "title": "WikiDoCollab",
+      "description": "A full stack research collaboration platform where users can create, edit, and collaborate on projects and research papers in real-time.",
+      "tags": [
+        "ReactJs",
+        "NodeJs",
+        "ExpressJs",
+        "MongoDB"
+      ],
       "featured": true,
-      "link": "https://github.com/ArmaanM08/SME_Dashboard",
+      "link": "https://my-project-wikidocollab.vercel.app/",
       "repo": "https://github.com/ArmaanM08/SME_Dashboard",
       "demo": null
     },
     {
       "id": "2",
-      "title": "WikiDoCollab",
-      "description": "A full stack research collaboration platform where users can create, edit, and collaborate on projects and research papers in real-time.",
-      "tags": ["React.js", "Node.js", "MongoDB", "Express.js"],
+      "title": "SME Analytics Dashboard",
+      "description": "A comprehensive dashboard for predicting the risk score of loan repayment using machine learning models.",
+      "tags": [
+        "Python",
+        "ML",
+        "Netlify"
+      ],
       "featured": false,
       "link": "https://my-project-wikidocollab.vercel.app/",
       "repo": null,
@@ -56,26 +65,113 @@
       "id": "3",
       "title": "Sentinel-ML",
       "description": "A production-ready AI-powered business analytics system with an intuitive UI, multi-data support, and Dockerized form for portability.",
-      "tags": ["Python", "FastAPI", "Docker", "ML"],
+      "tags": [
+        "Python",
+        "FastAPI",
+        "Docker",
+        "ML"
+      ],
       "featured": false,
       "link": "https://github.com/ArmaanM08/SentinelML.git",
       "repo": "https://github.com/ArmaanM08/SentinelML.git",
       "demo": null
     }
   ],
+  "certifications": [
+    {
+      "id": "1",
+      "title": "Applied Data Science with Python",
+      "issuer": "IBM SkillsBuild",
+      "date": "Feb 2026",
+      "image": "/certifications/applied-data-science-with-python.png",
+      "file": "/certifications/applied-data-science-with-python.pdf",
+      "verify": null,
+      "description": "Completion certificate for the Applied Data Science with Python program on IBM SkillsBuild."
+    },
+    {
+      "id": "2",
+      "title": "Machine Learning with Python",
+      "issuer": "IBM via Coursera",
+      "date": "Jun 2026",
+      "image": "/certifications/machine-learning-with-python.png",
+      "file": "/certifications/machine-learning-with-python.pdf",
+      "verify": "https://coursera.org/verify/C5QRNTQKCFXL",
+      "description": "Online course on machine learning with Python, authorized by IBM and offered through Coursera."
+    }
+  ],
   "skills": [
-    { "id": "1", "name": "Python", "category": "Languages", "level": 90 },
-    { "id": "2", "name": "TypeScript", "category": "Languages", "level": 85 },
-    { "id": "3", "name": "React / Next.js", "category": "Web Dev", "level": 95 },
-    { "id": "4", "name": "Node.js", "category": "Web Dev", "level": 85 },
-    { "id": "5", "name": "REST APIs & FastAPI", "category": "Web Dev", "level": 80 },
-    { "id": "6", "name": "Machine Learning", "category": "Data Science", "level": 85 },
-    { "id": "7", "name": "MySQL", "category": "Database", "level": 85 },
-    { "id": "8", "name": "MongoDB", "category": "Database", "level": 80 },
-    { "id": "9", "name": "AWS (EC2, S3, VPC)", "category": "Cloud & DevOps", "level": 75 },
-    { "id": "10", "name": "Docker & Kubernetes", "category": "Cloud & DevOps", "level": 70 },
-    { "id": "11", "name": "Jenkins & CI/CD", "category": "Cloud & DevOps", "level": 65 },
-    { "id": "12", "name": "Git & GitHub", "category": "Cloud & DevOps", "level": 90 }
+    {
+      "id": "1",
+      "name": "Python",
+      "category": "Languages",
+      "level": 90
+    },
+    {
+      "id": "2",
+      "name": "TypeScript",
+      "category": "Languages",
+      "level": 85
+    },
+    {
+      "id": "3",
+      "name": "React / Next.js",
+      "category": "Web Dev",
+      "level": 95
+    },
+    {
+      "id": "4",
+      "name": "Node.js",
+      "category": "Web Dev",
+      "level": 85
+    },
+    {
+      "id": "5",
+      "name": "REST APIs & FastAPI",
+      "category": "Web Dev",
+      "level": 80
+    },
+    {
+      "id": "6",
+      "name": "Machine Learning",
+      "category": "Data Science",
+      "level": 85
+    },
+    {
+      "id": "7",
+      "name": "MySQL",
+      "category": "Database",
+      "level": 85
+    },
+    {
+      "id": "8",
+      "name": "MongoDB",
+      "category": "Database",
+      "level": 80
+    },
+    {
+      "id": "9",
+      "name": "AWS (EC2, S3, VPC)",
+      "category": "Cloud & DevOps",
+      "level": 75
+    },
+    {
+      "id": "10",
+      "name": "Docker & Kubernetes",
+      "category": "Cloud & DevOps",
+      "level": 70
+    },
+    {
+      "id": "11",
+      "name": "Jenkins & CI/CD",
+      "category": "Cloud & DevOps",
+      "level": 65
+    },
+    {
+      "id": "12",
+      "name": "Git & GitHub",
+      "category": "Cloud & DevOps",
+      "level": 90
+    }
   ],
   "contact": {
     "email": "armaanmulani08@gmail.com",
