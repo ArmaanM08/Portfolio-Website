@@ -18,14 +18,14 @@ export default async function Home() {
 
   return (
     <>
-      <Hero data={portfolioData.hero} />
+      <Hero data={portfolioData.hero} resume={portfolioData.resume} />
       <Marquee />
       <Experience data={portfolioData.experience} education={portfolioData.education} />
       <Projects data={portfolioData.projects} />
       <Certifications data={portfolioData.certifications} />
       <Skills data={portfolioData.skills} projectsCount={portfolioData.projects.length} />
       <Contact data={portfolioData.contact} />
-      <Footer />
+      <Footer contact={portfolioData.contact} resume={portfolioData.resume} />
     </>
   );
 }

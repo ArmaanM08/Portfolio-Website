@@ -76,6 +76,7 @@ interface PortfolioData {
     certifications: CertificationItem[];
     skills: SkillItem[];
     contact: ContactData;
+    resume: { file: string | null };
 }
 
 type ArraySection = 'experience' | 'education' | 'projects' | 'skills' | 'certifications';
@@ -87,7 +88,8 @@ const emptyPortfolio = (): PortfolioData => ({
     projects: [],
     certifications: [],
     skills: [],
-    contact: { email: '', phone: '', location: '', status: '', linkedin: '', github: '', message: '' }
+    contact: { email: '', phone: '', location: '', status: '', linkedin: '', github: '', message: '' },
+    resume: { file: null }
 });
 
 function newId(): string {
@@ -191,6 +193,8 @@ export default function AdminDashboard() {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState('');
+    const [uploading, setUploading] = useState(false);
+    const [uploadMessage, setUploadMessage] = useState('');
 
     useEffect(() => {
         fetch('/api/portfolio')
@@ -205,7 +209,8 @@ export default function AdminDashboard() {
                     projects: fetchedData.projects ?? base.projects,
                     certifications: fetchedData.certifications ?? base.certifications,
                     skills: fetchedData.skills ?? base.skills,
-                    contact: fetchedData.contact ?? base.contact
+                    contact: fetchedData.contact ?? base.contact,
+                    resume: fetchedData.resume ?? base.resume
                 });
                 setLoading(false);
             })
@@ -241,6 +246,29 @@ export default function AdminDashboard() {
     const handleLogout = async () => {
         await fetch('/api/logout', { method: 'POST' });
         router.push('/login');
+    };
+
+    const handleResumeUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        setUploading(true);
+        setUploadMessage('');
+        try {
+            const form = new FormData();
+            form.append('file', file);
+            const res = await fetch('/api/resume', { method: 'POST', body: form });
+            if (res.ok) {
+                setData(prev => (prev ? { ...prev, resume: { file: '/resume.pdf' } } : prev));
+                setUploadMessage('Resume uploaded successfully!');
+            } else {
+                setUploadMessage('Failed to upload resume.');
+            }
+        } catch {
+            setUploadMessage('Error uploading resume.');
+        } finally {
+            setUploading(false);
+            e.target.value = '';
+        }
     };
 
     const updateField = <K extends 'hero' | 'contact'>(section: K, field: keyof PortfolioData[K], value: string) => {
@@ -341,8 +369,32 @@ export default function AdminDashboard() {
                     <TextAreaField label="Message" value={data.contact.message} onChange={v => updateField('contact', 'message', v)} rows={3} />
                 </div>
 
+                {/* RESUME SECTION */}
+                <div className={`card ${styles.sectionCard} animate-fade-in-up delay-3`}>
+                    <h2>Resume</h2>
+                    {data.resume?.file ? (
+                        <p className={styles.resumeStatus}>
+                            Current file: <a href={data.resume.file} target="_blank" rel="noopener noreferrer" className={styles.viewLink}>{data.resume.file}</a>
+                        </p>
+                    ) : (
+                        <p className={styles.resumeStatus}>No resume uploaded yet. Upload a PDF and the Download Resume button will appear on the site.</p>
+                    )}
+                    <div className={styles.formGroup}>
+                        <label>Upload Resume (PDF)</label>
+                        <input
+                            type="file"
+                            accept=".pdf,application/pdf"
+                            className="input-field"
+                            onChange={handleResumeUpload}
+                            disabled={uploading}
+                            style={{ padding: '0.6rem' }}
+                        />
+                    </div>
+                    {uploadMessage && <span className={styles.message}>{uploadMessage}</span>}
+                </div>
+
                 {/* EXPERIENCE SECTION */}
-                <div className={`card ${styles.sectionCard} ${styles.fullWidth} animate-fade-in-up delay-3`}>
+                <div className={`card ${styles.sectionCard} ${styles.fullWidth} animate-fade-in-up delay-4`}>
                     <h2>Experience</h2>
                     <div className={styles.arrayList}>
                         {data.experience.map((item: WorkItem, index: number) => (
@@ -378,7 +430,7 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* EDUCATION SECTION */}
-                <div className={`card ${styles.sectionCard} ${styles.fullWidth} animate-fade-in-up delay-4`}>
+                <div className={`card ${styles.sectionCard} ${styles.fullWidth} animate-fade-in-up delay-5`}>
                     <h2>Education</h2>
                     <div className={styles.arrayList}>
                         {data.education.map((item: EducationItem, index: number) => (
@@ -405,7 +457,7 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* PROJECTS SECTION */}
-                <div className={`card ${styles.sectionCard} ${styles.fullWidth} animate-fade-in-up delay-5`}>
+                <div className={`card ${styles.sectionCard} ${styles.fullWidth} animate-fade-in-up delay-6`}>
                     <h2>Projects</h2>
                     <div className={styles.arrayList}>
                         {data.projects.map((project: ProjectItem, index: number) => (
@@ -453,7 +505,7 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* CERTIFICATIONS SECTION */}
-                <div className={`card ${styles.sectionCard} ${styles.fullWidth} animate-fade-in-up delay-6`}>
+                <div className={`card ${styles.sectionCard} ${styles.fullWidth} animate-fade-in-up delay-7`}>
                     <h2>Certifications</h2>
                     <div className={styles.arrayList}>
                         {data.certifications.map((cert: CertificationItem, index: number) => (
@@ -486,7 +538,7 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* SKILLS SECTION */}
-                <div className={`card ${styles.sectionCard} ${styles.fullWidth} animate-fade-in-up delay-7`}>
+                <div className={`card ${styles.sectionCard} ${styles.fullWidth} animate-fade-in-up delay-8`}>
                     <h2>Skills</h2>
                     <div className={styles.arrayList}>
                         {data.skills.map((skill: SkillItem, index: number) => (

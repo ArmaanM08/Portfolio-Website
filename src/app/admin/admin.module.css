@@ -226,14 +226,21 @@
 }
 
 .viewLink {
-    color: var(--accent-color);
-    font-weight: 700;
-    text-decoration: none;
-    transition: opacity 0.2s ease;
+  color: var(--accent-color);
+  font-weight: 700;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
 }
 
 .viewLink:hover {
-    opacity: 0.8;
+  opacity: 0.8;
+}
+
+.resumeStatus {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
 }
 
 @keyframes fadeIn {

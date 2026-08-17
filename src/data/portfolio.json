@@ -173,6 +173,9 @@
       "level": 90
     }
   ],
+  "resume": {
+    "file": "/resume.pdf"
+  },
   "contact": {
     "email": "armaanmulani08@gmail.com",
     "phone": "+91 9175342739",

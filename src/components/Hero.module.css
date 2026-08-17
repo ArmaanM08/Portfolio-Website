@@ -104,6 +104,20 @@
   line-height: 1.6;
 }
 
+.ctaRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .ctaRow .btn {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+}
+
 .annotation {
   position: absolute;
   z-index: 2;
