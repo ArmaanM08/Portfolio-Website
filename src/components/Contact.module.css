@@ -90,6 +90,24 @@
   transition: opacity 0.5s ease;
   animation: borderSpin 5s linear infinite;
   pointer-events: none;
+  transition: box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.contactCard:hover::after {
+  box-shadow: 0 0 30px rgba(124, 58, 237, 0.4);
+  background: conic-gradient(
+    from var(--angle, 0deg),
+    #7c3ae0 0%,
+    #a78bf2 12%,
+    #d69e2e 26%,
+    transparent 40%,
+    transparent 100%
+  );
+}
+
+.contactCard:focus-visible::after {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 4px;
 }
 
 @property --angle {
@@ -190,12 +208,32 @@
   letter-spacing: 0.5px;
   position: relative;
   padding: 0.5rem 0;
-  transition: color 0.3s ease;
+  transition: color 0.3s ease, transform 0.3s ease;
+  background: linear-gradient(135deg, var(--text-color), var(--text-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  border-radius: 4px;
+}
+
+.socialLink:hover {
+  color: var(--accent-color);
+  transform: translateY(-2px) scale(1.05);
+}
+
+.socialLink:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
 }
 
 .socialLink svg {
   opacity: 0.6;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.socialLink:hover svg {
+  opacity: 1;
+  transform: scale(1.1);
 }
 
 .socialLink::after {
