@@ -148,7 +148,6 @@ export default function Hero({ data, resume }: HeroProps) {
       : true
   );
   const [visibleCards, setVisibleCards] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   const getTarget = useCallback(
     () => (Number.isFinite(lastTimeRef.current) ? lastTimeRef.current : 0),
@@ -271,25 +270,18 @@ export default function Hero({ data, resume }: HeroProps) {
   }, []);
 
   useEffect(() => {
-    const check = () => {
-      const dark = darkVideoRef.current;
-      const light = lightVideoRef.current;
-      if (dark && light && dark.readyState >= 2 && light.readyState >= 2) {
-        setIsLoading(false);
-      } else {
-        requestAnimationFrame(check);
-      }
-    };
-    check();
+    const overlay = document.querySelector('.loading-overlay') as HTMLElement;
+    if (overlay) {
+      overlay.style.display = 'none';
+    }
   }, []);
 
-  return isLoading ? (
-    <div className="loading-screen">
-      <div className="loading-spinner" />
-      <span>Loading...</span>
-    </div>
-  ) : (
+  return (
     <section ref={sectionRef} id="top" className={styles.section}>
+      <div className="loading-overlay">
+        <div className="loading-spinner" />
+        <span>Taking you to Armaan Mulani&#8230;</span>
+      </div>
       <div className={styles.sticky}>
         <video
           ref={darkVideoRef}
