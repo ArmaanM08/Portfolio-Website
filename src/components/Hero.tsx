@@ -148,6 +148,7 @@ export default function Hero({ data, resume }: HeroProps) {
       : true
   );
   const [visibleCards, setVisibleCards] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getTarget = useCallback(
     () => (Number.isFinite(lastTimeRef.current) ? lastTimeRef.current : 0),
@@ -269,7 +270,25 @@ export default function Hero({ data, resume }: HeroProps) {
     };
   }, []);
 
-  return (
+  useEffect(() => {
+    const check = () => {
+      const dark = darkVideoRef.current;
+      const light = lightVideoRef.current;
+      if (dark && light && dark.readyState >= 2 && light.readyState >= 2) {
+        setIsLoading(false);
+      } else {
+        requestAnimationFrame(check);
+      }
+    };
+    check();
+  }, []);
+
+  return isLoading ? (
+    <div className="loading-screen">
+      <div className="loading-spinner" />
+      <span>Loading...</span>
+    </div>
+  ) : (
     <section ref={sectionRef} id="top" className={styles.section}>
       <div className={styles.sticky}>
         <video
