@@ -4,6 +4,19 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './admin.module.css';
 
+// Theme toggle
+const [isDark, setIsDark] = useState(
+    () => document.documentElement.getAttribute('data-theme') !== 'light'
+);
+useEffect(() => {
+    const html = document.documentElement;
+    if (isDark) {
+        html.setAttribute('data-theme', 'dark');
+    } else {
+        html.setAttribute('data-theme', 'light');
+    }
+}, [isDark]);
+
 interface HeroData {
     greeting: string;
     title: string;
@@ -337,6 +350,13 @@ export default function AdminDashboard() {
                     <button onClick={handleLogout} className={`btn btn-secondary ${styles.btnSmall}`}>Logout</button>
                     <button onClick={handleSave} className={`btn ${styles.btnSmall}`} disabled={saving}>
                         {saving ? 'Saving...' : 'Save Changes'}
+                    </button>
+                    <button
+                        onClick={() => setIsDark((prev) => !prev)}
+                        className={`btn ${styles.btnSmall}`}
+                        aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+                    >
+                        {isDark ? 'Light Mode' : 'Dark Mode'}
                     </button>
                 </div>
             </div>
