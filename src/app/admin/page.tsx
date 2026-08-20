@@ -4,19 +4,6 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './admin.module.css';
 
-// Theme toggle
-const [isDark, setIsDark] = useState(
-    () => document.documentElement.getAttribute('data-theme') !== 'light'
-);
-useEffect(() => {
-    const html = document.documentElement;
-    if (isDark) {
-        html.setAttribute('data-theme', 'dark');
-    } else {
-        html.setAttribute('data-theme', 'light');
-    }
-}, [isDark]);
-
 interface HeroData {
     greeting: string;
     title: string;
@@ -208,6 +195,21 @@ export default function AdminDashboard() {
     const [message, setMessage] = useState('');
     const [uploading, setUploading] = useState(false);
     const [uploadMessage, setUploadMessage] = useState('');
+    const [isDark, setIsDark] = useState(true);
+
+    useEffect(() => {
+        const html = document.documentElement;
+        const sync = () => setIsDark(html.getAttribute('data-theme') !== 'light');
+        sync();
+        const mo = new MutationObserver(sync);
+        mo.observe(html, { attributes: true, attributeFilter: ['data-theme'] });
+        return () => mo.disconnect();
+    }, []);
+
+    useEffect(() => {
+        const html = document.documentElement;
+        html.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    }, [isDark]);
 
     useEffect(() => {
         fetch('/api/portfolio')

@@ -142,11 +142,7 @@ export default function Hero({ data, resume }: HeroProps) {
   const heroTextRef = useRef<HTMLDivElement>(null);
   const prevVisibleRef = useRef('');
   const lastTimeRef = useRef(-1);
-  const [isDark, setIsDark] = useState(
-    () => typeof document !== 'undefined'
-      ? document.documentElement.getAttribute('data-theme') !== 'light'
-      : true
-  );
+  const [isDark, setIsDark] = useState(true);
   const [visibleCards, setVisibleCards] = useState<string[]>([]);
 
   const getTarget = useCallback(
@@ -159,6 +155,7 @@ export default function Hero({ data, resume }: HeroProps) {
   useEffect(() => {
     const el = document.documentElement;
     const sync = () => setIsDark(el.getAttribute('data-theme') !== 'light');
+    sync();
     const mo = new MutationObserver(sync);
     mo.observe(el, { attributes: true, attributeFilter: ['data-theme'] });
     return () => mo.disconnect();
